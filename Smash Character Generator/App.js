@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert} from 'react-native';
-import {Grid,Row,Col} from 'react-native-easy-grid';
+import { StyleSheet, Text, View, Image, Button, Alert } from 'react-native';
+import { Grid, Row, Col } from 'react-native-easy-grid';
 export default class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state ={
-      arraychar : [{
+    this.state = {
+      arraychar: [{
         id: 1,
         name: "Mario",
         requireurl: require("./img/Mario.png"),
@@ -22,7 +22,7 @@ export default class App extends React.Component {
         name: "Link",
         requireurl: require("./img/Link.png"),
         enabled: true
-      },  
+      },
       {
         id: 4,
         name: "Samus",
@@ -286,7 +286,7 @@ export default class App extends React.Component {
         name: "R.O.B.",
         requireurl: require("./img/ROB.png"),
         enabled: true
-      }, 
+      },
       {
         id: 48,
         name: "Toon Link",
@@ -362,7 +362,7 @@ export default class App extends React.Component {
       {
         id: 60,
         name: "Pac-Man",
-        requireurl: require("./img/Pac-Man.png"),
+        requireurl: require("./img/Pac-man.png"),
         enabled: true
       },
       {
@@ -446,7 +446,7 @@ export default class App extends React.Component {
       {
         id: 74,
         name: "King k Rool",
-        requireurl: require("./img/King_k_Rool.png"),
+        requireurl: require("./img/King_K_Rool.png"),
         enabled: true
       },
       {
@@ -467,56 +467,64 @@ export default class App extends React.Component {
         requireurl: require("./img/Piranha_Plant.png"),
         enabled: true
       },
-    ],
-    random: 0,
-    characterSource: require("./img/Mario.png")
+      ],
+      random: 0,
+      characterSource: require("./img/random.png"),
+      characterName: "random"
     }
   };
- 
+
   _onPressButton = (e) => {
     // Random generator
-      const max = this.state.arraychar.length;
-      const rand = Math.floor(Math.random()* max);
+    const max = this.state.arraychar.length;
+    const rand = Math.floor(Math.random() * max);
 
-      this.setState({ random: rand});
-      let idx = this.state.random;
+    this.setState({ random: rand });
+    let idx = this.state.random;
 
     // Looks through arraychar for the the requiredurl of the randomly chosen number
-      let o = this.state.arraychar;
-      var key = Object.keys(o)[idx];
-      value = o[key]
-      //console.log(value);
+    let o = this.state.arraychar;
+    var key = Object.keys(o)[idx];
+    value = o[key]
+    //console.log(value);
 
-      this.state.characterSource = value.requireurl;
+    this.state.characterSource = value.requireurl;
   }
- 
+
   render() {
-    
-    return ( 
-        <Grid >
-          <Row style={{height: "4%"}}></Row>
-        <Row style={{height: "50%",width: "100%", lex: 1,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',}}>
-          <Image style={{width: 300, height: "100%"}} source={this.state.characterSource}
+
+    return (
+      <Grid>
+
+        <Row style={{ backgroundColor: 'red', height: "4%" }}></Row>
+        <Row style={{
+          height: "50%", width: "100%", lex: 1,
+          backgroundColor: 'red',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Image style={{ width: 300, height: "100%" }} source={this.state.characterSource}
           />
-            
+
         </Row>
-        <Row style={{height: "25%", flex: 1,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',}}>
-        <Text></Text>
+        <Row style={{
+          height: "25%", flex: 1,
+          backgroundColor: 'red',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Text></Text>
         </Row>
-        <Row style={{height: "50%", flex: 1,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',}}>
+        <Row style={{
+          height: "50%", flex: 1,
+          backgroundColor: 'red',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
           <Button onPress={this._onPressButton.bind(this)}
-  title="Press Me"></Button>
+            title="Press Me"></Button>
         </Row>
-        </Grid>
+      </Grid>
     );
   }
 }
