@@ -7,22 +7,18 @@ export default class App extends React.Component {
     this.state ={
       arraychar : [{
         id: 0,
-        name: "Bowser",
-        requireurl: require("./img/Bowser.png")
+        name: "Bowser"
         
       }, {
         id: 1,
-        name: "Mario",
-        requireurl: require("./img/Mario.png")
+        name: "Mario"
       }, {
         id: 2,
-        name: "Ness",
-        requireurl: require("./img/Ness.png")
+        name: "Ness"
         
       }, {
         id: 3,
-        name: "Bayonetta",
-        requireurl: require("./img/Bayonetta.png")
+        name: "Bayonetta"
        
       }],
     random: 0,
@@ -36,15 +32,12 @@ export default class App extends React.Component {
       const rand = Math.floor(Math.random()* max);
 
       this.setState({ random: rand});
-      let idx = this.state.random;
 
     // Looks through arraychar for the the requiredurl of the randomly chosen number
-      let o = this.state.arraychar;
-      var key = Object.keys(o)[idx];
-      value = o[key]
+      let name = String(this.state.arraychar[this.state.random].name);
+      let imgname = String("./img/" + "Lucas" + ".png");
+      this.setState({characterSource: require(imgname)})
       //console.log(value);
-
-      this.state.characterSource = value.requireurl;
   }
  
   render() {
@@ -56,7 +49,7 @@ export default class App extends React.Component {
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',}}>
-          <Image style={{width: 300, height: "100%"}} source={this.state.characterSource}
+          <Image style={{width: 300, height: "100%"}} source={{uri: 'img:/Bowser.png'}}
           />
             
         </Row>
