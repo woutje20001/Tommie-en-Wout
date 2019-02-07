@@ -499,7 +499,7 @@ export default class App extends React.Component {
 
         <Row style={{ backgroundColor: 'white', height: "4%" }}></Row>
         <Row style={{
-          height: "66%", width: "100%", lex: 1,
+          height: "66%", width: "100%", flex: 1,
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',

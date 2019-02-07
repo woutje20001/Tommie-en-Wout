@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "RanSmashCharGen",
-    "slug": "RanSmashCharGen",
+    "name": "Random Smash Character Generator",
+    "slug": "random-smash-character-generator",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -13,7 +13,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -23,7 +23,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.tommieenwout.randomsmashcharactergenerator",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.tommie_en_wout.random_smash_character_generator"
     }
   }
 }
