@@ -49,7 +49,7 @@ export default class App extends React.Component {
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',}}>
-          <Image style={{width: 300, height: "100%"}} source={{uri: 'img:/Bowser.png'}}
+          <Image style={{width: 300, height: "100%"}} source={{uri: './assets/img/Bowser.png'}}
           />
             
         </Row>
