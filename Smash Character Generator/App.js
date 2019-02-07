@@ -470,7 +470,7 @@ export default class App extends React.Component {
       ],
       random: 0,
       characterSource: require("./img/random.png"),
-      characterName: "random"
+      characterName: "Press the button to randomize a character"
     }
   };
 
@@ -499,17 +499,18 @@ export default class App extends React.Component {
 
         <Row style={{ backgroundColor: 'white', height: "4%" }}></Row>
         <Row style={{
-          height: "50%", width: "100%", lex: 1,
+          height: "66%", width: "100%", lex: 1,
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
+         
         }}>
-          <Image style={{ width: 300, height: "100%" }} source={this.state.characterSource}
+          <Image style={{ width: "90%", height: "90%", resizeMode: 'contain' }} source={this.state.characterSource}
           />
 
         </Row>
         <Row style={{
-          height: "25%", flex: 1,
+          height: "20%", flex: 1,
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
@@ -518,13 +519,13 @@ export default class App extends React.Component {
         </Row>
        
         <Row style={{
-          height: "40%", flex: 1,
+          height: "35%", flex: 1,
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
           <Button onPress={this._onPressButton.bind(this)}
-            title="Press Me"></Button>
+            title="Randomize"></Button>
         </Row>
       </Grid>
     );
