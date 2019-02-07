@@ -489,6 +489,7 @@ export default class App extends React.Component {
     //console.log(value);
 
     this.state.characterSource = value.requireurl;
+    this.state.characterName = value.name;
   }
 
   render() {
@@ -496,10 +497,10 @@ export default class App extends React.Component {
     return (
       <Grid>
 
-        <Row style={{ backgroundColor: 'red', height: "4%" }}></Row>
+        <Row style={{ backgroundColor: 'white', height: "4%" }}></Row>
         <Row style={{
           height: "50%", width: "100%", lex: 1,
-          backgroundColor: 'red',
+          backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -509,15 +510,16 @@ export default class App extends React.Component {
         </Row>
         <Row style={{
           height: "25%", flex: 1,
-          backgroundColor: 'red',
+          backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Text></Text>
+          <Text>{this.state.characterName}</Text>
         </Row>
+       
         <Row style={{
-          height: "50%", flex: 1,
-          backgroundColor: 'red',
+          height: "40%", flex: 1,
+          backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
@@ -532,7 +534,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
