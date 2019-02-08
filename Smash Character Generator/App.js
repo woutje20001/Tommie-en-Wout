@@ -468,7 +468,7 @@ export default class App extends React.Component {
         enabled: true
       },
       ],
-      random: 0,
+      random: -1,
       characterSource: require("./img/random.png"),
       characterName: "Press the button to randomize a character"
     }
@@ -492,34 +492,38 @@ export default class App extends React.Component {
     this.state.characterName = value.name;
   }
 
+  setRandom = () => {
+    if (this.state.random == -1) {
+      const max = this.state.arraychar.length;
+      const rand = Math.floor(Math.random() * max);
+
+      this.setState({ random: rand });
+    }
+  }
+
   render() {
 
     return (
-      <Grid>
+      <Grid onTouchStart={this.setRandom()}>
 
         <Row style={{ backgroundColor: 'white', height: "4%" }}></Row>
         <Row style={{
-          height: "66%", width: "100%", flex: 1,
+          height: "65%",
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
-         
         }}>
           <Image style={{ width: "90%", height: "90%", resizeMode: 'contain' }} source={this.state.characterSource}
           />
-
         </Row>
-        <Row style={{
-          height: "20%", flex: 1,
-          backgroundColor: 'white',
+        <Row style={{height: "5%",
           alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+          justifyContent: 'center'}}>
           <Text>{this.state.characterName}</Text>
         </Row>
-       
+
         <Row style={{
-          height: "35%", flex: 1,
+          height: "30%", flex: 1,
           backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',
