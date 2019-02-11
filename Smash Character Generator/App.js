@@ -485,7 +485,7 @@ export default class App extends React.Component {
     // Looks through arraychar for the the requiredurl of the randomly chosen number
     let o = this.state.arraychar;
     var key = Object.keys(o)[idx];
-    value = o[key]
+    value = o[key];
     //console.log(value);
 
     this.state.characterSource = value.requireurl;
