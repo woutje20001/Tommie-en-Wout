@@ -440,7 +440,7 @@ export default class App extends React.Component {
       {
         id: 73,
         name: "Richter",
-        requireurl: require("./img/Olimar.png"),
+        requireurl: require("./img/Richter.png"),
         enabled: true
       },
       {
@@ -518,7 +518,8 @@ export default class App extends React.Component {
         </Row>
         <Row style={{height: "5%",
           alignItems: 'center',
-          justifyContent: 'center'}}>
+          justifyContent: 'center',
+          backgroundColor: 'white'}}>
           <Text>{this.state.characterName}</Text>
         </Row>
 
