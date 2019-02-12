@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, Icon } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -565,10 +565,42 @@ class AboutScreen extends React.Component {
 
     }
   }
+  mailUs = () => {
+    Linking.openURL("mailto:tommieenwout@gmail.com?subject=Feedback");
+  }
+  privacyPolicy = () => {
+    Linking.openURL("https://www.freeprivacypolicy.com/privacy/view/e74026701dfae5c94f1f51c3f4f0e1f7");
+  }
   render() {
 
     return (
-      <Text style={styles.container}>Test</Text>
+      <Grid style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'}}>
+        <Row style={{height: '4%'}}></Row>
+        <Row style={{
+          height: '10%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white'}}>
+          <Text>App made by Tommie Olislagers and Wout van Riel</Text>
+        </Row>
+        <Row style={{
+          height: '15%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white'}}>
+          <Button color='tomato' onPress={this.privacyPolicy} title="View our Privacy Policy"></Button>
+        </Row>
+        <Row style={{
+          height: '15%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white'}}>
+          <Button color='tomato' onPress={this.mailUs} title="Mail Us"></Button>
+        </Row>
+      </Grid>
     )
   }
 };
@@ -580,7 +612,7 @@ const TabNavigator = createBottomTabNavigator({
     screen: SettingsPage,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FontAwesome name="cog" size={25} style={{ color: tintColor}} />
+        <FontAwesome name="cog" size={25} style={{ color: tintColor }} />
       )
     })
   },
@@ -596,7 +628,7 @@ const TabNavigator = createBottomTabNavigator({
     screen: AboutScreen,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FontAwesome name="question-circle" size={25} style={{ color: tintColor}} />
+        <FontAwesome name="question-circle" size={25} style={{ color: tintColor }} />
       )
     })
   },
