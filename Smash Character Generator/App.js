@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Button, Alert } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
-export default class App extends React.Component {
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+
+
+class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -516,10 +519,12 @@ export default class App extends React.Component {
           <Image style={{ width: "90%", height: "90%", resizeMode: 'contain' }} source={this.state.characterSource}
           />
         </Row>
-        <Row style={{height: "5%",
+        <Row style={{
+          height: "5%",
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'white'}}>
+          backgroundColor: 'white'
+        }}>
           <Text>{this.state.characterName}</Text>
         </Row>
 
@@ -536,6 +541,51 @@ export default class App extends React.Component {
     );
   }
 }
+
+class SettingsPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+
+    }
+  }
+  render() {
+
+    return (
+      <Text style={styles.container}>Test</Text>
+    )
+  }
+};
+
+class AboutScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+
+    }
+  }
+  render() {
+
+    return (
+      <Text style={styles.container}>Test</Text>
+    )
+  }
+};
+
+
+
+const TabNavigator = createBottomTabNavigator({
+  Settings: SettingsPage,
+  Home: HomeScreen,
+  About: AboutScreen
+},
+{
+  initialRouteName: 'Home'
+}
+
+);
+
+export default createAppContainer(TabNavigator);
 
 const styles = StyleSheet.create({
   container: {
