@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStorage } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -478,6 +478,33 @@ class HomeScreen extends React.Component {
     }
   };
 
+  /* ASYNC */
+
+  _storeData = async () => {
+    try {
+      
+      await AsyncStorage.setItem('@ArrayChar:key', this.state.arraychar);
+    } catch (error) {
+      Alert.alert(error);
+    }
+  }
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('ArrayChar');
+      if (value !== null) {
+        // We have data!!
+        this.setState({arraychar: value})
+        console.log(value);
+      }
+      else {
+        _storeData();
+      }
+    } catch (error) {
+      Alert.alert(error);
+    }
+  }
+  /* ASYNC */
+
   _onPressButton = (e) => {
     // Random generator
     const max = this.state.arraychar.length;
@@ -504,9 +531,16 @@ class HomeScreen extends React.Component {
       this.setState({ random: rand });
     }
   }
-
+  
   render() {
-
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._retrieveData}
+          onError={console.warn}
+        />
+      );
+    }
     return (
       <Grid onTouchStart={this.setRandom()}>
 
