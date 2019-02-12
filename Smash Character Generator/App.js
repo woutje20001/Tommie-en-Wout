@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, Icon } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 
 class HomeScreen extends React.Component {
@@ -534,7 +535,7 @@ class HomeScreen extends React.Component {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Button onPress={this._onPressButton.bind(this)}
+          <Button color='tomato' onPress={this._onPressButton.bind(this)}
             title="Randomize"></Button>
         </Row>
       </Grid>
@@ -575,15 +576,41 @@ class AboutScreen extends React.Component {
 
 
 const TabNavigator = createBottomTabNavigator({
-  Settings: SettingsPage,
-  Home: HomeScreen,
-  About: AboutScreen
+  Settings: {
+    screen: SettingsPage,
+    navigationOptions: () => ({
+      tabBarIcon: ({ tintColor }) => (
+        <FontAwesome name="cog" size={25} style={{ color: tintColor}} />
+      )
+    })
+  },
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: () => ({
+      tabBarIcon: ({ tintColor }) => (
+        <FontAwesome name="home" size={25} style={{ color: tintColor }} />
+      )
+    })
+  },
+  About: {
+    screen: AboutScreen,
+    navigationOptions: () => ({
+      tabBarIcon: ({ tintColor }) => (
+        <FontAwesome name="question-circle" size={25} style={{ color: tintColor}} />
+      )
+    })
+  },
 },
-{
-  initialRouteName: 'Home'
-}
-
-);
+  {
+    initialRouteName: 'Home',
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+      alignItems: 'center',
+      justifyContent: 'center',
+      showIcon: true,
+    }
+  });
 
 export default createAppContainer(TabNavigator);
 
@@ -593,5 +620,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }
 });
