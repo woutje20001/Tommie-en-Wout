@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStora
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { Audio } from 'expo';
+import { Audio, AppLoading } from 'expo';
 
 
 class HomeScreen extends React.Component {
@@ -552,7 +552,8 @@ class HomeScreen extends React.Component {
       ],
       random: -1,
       characterSource: require("./img/random.png"),
-      characterName: "Press the button to randomize a character"
+      characterName: "Press the button to randomize a character",
+      isReady: false,
     }
   };
 
@@ -583,7 +584,7 @@ class HomeScreen extends React.Component {
   }
   /* ASYNC */
 
-  test = () => {
+  testAlert = () => {
     Alert.alert("Loading");
   }
 
@@ -624,7 +625,45 @@ class HomeScreen extends React.Component {
     }
   }
 
+  _retrieveData = async () => {
+    try {
+      let o = this.state.arraychar;
+      for (let i = 0; i < o.length; i++) {
+        var key = Object.keys(o)[i + 1];
+        value = o[key];
+        const item = await AsyncStorage.getItem(i + 1);
+        this.state.arraychar[i+1].enabled = item;
+      }
+    } catch (error) {
+      // Error retrieving data
+      Alert.alert(error)
+    }
+  }
+
+  _storeData = async () => {
+    try {
+      let o = this.state.arraychar;
+      for (let i = 0; i < o.length; i++) {
+        var key = Object.keys(o)[i + 1];
+        value = o[key];
+        AsyncStorage.setItem(i + 1, value.enabled);
+      }
+    } catch (error) {
+      // Error saving data
+      Alert.alert(error)
+    }
+  }
+
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this.testAlert}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
     return (
       <Grid onTouchStart={this.setRandom()}>
 
@@ -655,6 +694,10 @@ class HomeScreen extends React.Component {
         }}>
           <Button color='tomato' onPress={this._onPressButton.bind(this)}
             title="Randomize"></Button>
+          <Button color='tomato' onPress={this._retrieveData}
+            title="Get"></Button>
+          <Button color='tomato' onPress={this._storeData}
+            title="Store"></Button>
         </Row>
       </Grid>
     );
@@ -671,7 +714,12 @@ class SettingsPage extends React.Component {
   render() {
 
     return (
-      <Text style={styles.container}>Test</Text>
+      <Grid style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+      }}><Text>Coming Soon!</Text>
+      </Grid>
     )
   }
 };
@@ -696,32 +744,7 @@ class AboutScreen extends React.Component {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
-      }}>
-        <Row style={{ height: '4%' }}></Row>
-        <Row style={{
-          height: '10%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'white'
-        }}>
-          <Text>App made by Tommie Olislagers and Wout van Riel</Text>
-        </Row>
-        <Row style={{
-          height: '15%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'white'
-        }}>
-          <Button color='tomato' onPress={this.privacyPolicy} title="View our Privacy Policy"></Button>
-        </Row>
-        <Row style={{
-          height: '15%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'white'
-        }}>
-          <Button color='tomato' onPress={this.mailUs} title="Mail Us"></Button>
-        </Row>
+      }}><Text>Coming Soon!</Text>
       </Grid>
     )
   }
