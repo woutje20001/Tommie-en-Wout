@@ -4,7 +4,9 @@ import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { FontAwesome } from '@expo/vector-icons';
 import { Audio, AppLoading } from 'expo';
-/*TODO: ADD APPLOADING TO BOTH HOME AND SETTINGS TO SET RANDOM TO -1*/
+/*TODO: ADD APPLOADING TO BOTH HOME AND SETTINGS TO SET RANDOM TO -1,
+ADD GOOD LAYOUT TO SETTINGS
+ADD FUNCTIONALITY TO SETTINGS*/
 
 class HomeScreen extends React.Component {
   constructor(props) {
