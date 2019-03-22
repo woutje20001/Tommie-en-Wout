@@ -570,7 +570,7 @@ class HomeScreen extends React.Component {
     var key = Object.keys(o)[idx];
     value = o[key];
     //console.log(value);
-
+    if (value.enabled == true) {
     this.state.characterSource = value.requireurl;
     this.state.characterName = value.name;
 
@@ -583,6 +583,10 @@ class HomeScreen extends React.Component {
     } catch (error) {
       // An error occurred!
     }
+  }
+  else {
+    _onPressButton();
+  }
   }
 
 
@@ -1245,6 +1249,7 @@ class SettingsPage extends React.Component {
   }
 
   render() {
+
 
     return (
       <Grid onTouchStart={this._retrieveData} style={{
