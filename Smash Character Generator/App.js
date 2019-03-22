@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStorage, Table } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { FontAwesome } from '@expo/vector-icons';
 import { Audio, AppLoading } from 'expo';
-
+/*TODO: ADD APPLOADING TO BOTH HOME AND SETTINGS TO SET RANDOM TO -1*/
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -1220,6 +1220,12 @@ class SettingsPage extends React.Component {
     }
   }
 
+  _getData = async () => {
+    if (this.state.random == -1) {
+      _retrieveData();
+    }
+  }
+
   _retrieveData = async () => {
     try {
       let o = await AsyncStorage.getItem('somekey');
@@ -1248,17 +1254,30 @@ class SettingsPage extends React.Component {
     }
   }
 
+  createImg = () => {
+    let table = [];
+    this.state.arraychar.forEach(element => {
+      table.push(<Grid>{<Image source={element.requireurl}/>}</Grid>);
+    });
+    console.log(table);
+    return table
+  }
+
+
   render() {
 
 
     return (
-      <Grid onTouchStart={this._retrieveData} style={{
+      <Grid onTouchStart={this._getData} style={{
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
       }}>
       <Button color='tomato' onPress={this._storeData}
             title="Store"></Button>
+        <Grid>
+          {this.createImg()}
+        </Grid>
       </Grid>
     )
   }
