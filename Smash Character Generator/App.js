@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStorage } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { Audio, AppLoading } from 'expo';
 
 
@@ -584,10 +584,6 @@ class HomeScreen extends React.Component {
   }
   /* ASYNC */
 
-  testAlert = () => {
-    Alert.alert("Loading");
-  }
-
   _onPressButton = async (e) => {
     // Random generator
     const max = this.state.arraychar.length;
@@ -627,13 +623,10 @@ class HomeScreen extends React.Component {
 
   _retrieveData = async () => {
     try {
-      let o = this.state.arraychar;
-      for (let i = 0; i < o.length; i++) {
-        var key = Object.keys(o)[i + 1];
-        value = o[key];
-        const item = await AsyncStorage.getItem(i + 1);
-        this.state.arraychar[i+1].enabled = item;
-      }
+      let o = await AsyncStorage.getItem('somekey');
+      let c = JSON.parse(o)
+      console.log(c);
+      alert(o);
     } catch (error) {
       // Error retrieving data
       Alert.alert(error)
@@ -643,11 +636,8 @@ class HomeScreen extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      for (let i = 0; i < o.length; i++) {
-        var key = Object.keys(o)[i + 1];
-        value = o[key];
-        AsyncStorage.setItem(i + 1, value.enabled);
-      }
+      AsyncStorage.setItem('somekey', JSON.stringify(o));
+      console.log(o);
     } catch (error) {
       // Error saving data
       Alert.alert(error)
