@@ -580,8 +580,8 @@ class HomeScreen extends React.Component {
           characterName: value.name,
           characterSource: value.requireurl
       });
-    alert(`${this.state.characterSource} ${value.requireurl}`);
-    alert(`${this.state.characterSource} ${value.requireurl}`);
+    console.log(`${this.state.characterSource} ${value.requireurl}`);
+    console.log(`${this.state.characterSource} ${value.requireurl}`);
     Audio.setIsEnabledAsync(true)
     const soundObject = new Audio.Sound();
     bool = false;
@@ -1256,21 +1256,26 @@ class SettingsPage extends React.Component {
   }
 
   _disableCharacter = (name) => {
-    for (let i = 0; i < 77; i++) {
-      if (this.state.arraychar[i].name == name) {
-        console.log(`${name} ${this.state.arraychar[i].name}`)
-        if (this.state.arraychar[i].enabled == true) {
-          this.state.arraychar[i].enabled = false;
-          console.log(`setting ${name} to false`)
-        }
-        else {
-          this.state.arraychar[i].enabled = true;
-          console.log(`setting ${name} to true`)
-        }
+    for (let i = 0; i < this.state.arraychar.length; i++) {
+      let character = this.state.arraychar[i];
+
+      if(character.name == name) {
+        this.setState({
+          arraychar: [
+            ...this.state.arraychar.slice(0, i),
+            {
+              ...character,
+              enabled: !character.enabled
+            },
+            ...this.state.arraychar.slice(i+1)
+          ]
+        },
+        () => {
+          this._storeData();
+        });
+        break;
       }
     }
-    this._storeData();
-    this.forceUpdate();
   }
 
   createImg = () => {
