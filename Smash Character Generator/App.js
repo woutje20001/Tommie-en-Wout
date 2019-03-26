@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, Icon, Linking, AsyncStorage, Table } from 'react-native';
+import { AppRegistry, TouchableHighlight, StyleSheet, Text, ScrollView, View, Image, Button, Alert, Icon, Linking, AsyncStorage } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { FontAwesome } from '@expo/vector-icons';
@@ -560,10 +560,12 @@ class HomeScreen extends React.Component {
   };
 
   _onPressButton = async (e) => {
+    let bool = true;
+    while( bool == true) {
     // Random generator
+    await this._retrieveData();
     const max = this.state.arraychar.length;
     const rand = Math.floor(Math.random() * max);
-
     this.setState({ random: rand });
     let idx = this.state.random;
 
@@ -572,12 +574,17 @@ class HomeScreen extends React.Component {
     var key = Object.keys(o)[idx];
     value = o[key];
     //console.log(value);
+    console.log(value);
     if (value.enabled == true) {
-    this.state.characterSource = value.requireurl;
-    this.state.characterName = value.name;
-
+      this.setState({
+          characterName: value.name,
+          characterSource: value.requireurl
+      });
+    alert(`${this.state.characterSource} ${value.requireurl}`);
+    alert(`${this.state.characterSource} ${value.requireurl}`);
     Audio.setIsEnabledAsync(true)
     const soundObject = new Audio.Sound();
+    bool = false;
     try {
       await soundObject.loadAsync(value.audio);
       await soundObject.playAsync();
@@ -586,10 +593,8 @@ class HomeScreen extends React.Component {
       // An error occurred!
     }
   }
-  else {
-    _onPressButton();
   }
-  }
+}
 
 
 
@@ -612,11 +617,10 @@ class HomeScreen extends React.Component {
 
   setRandom = async () => {
     if (this.state.random == -1) {
+      await this._retrieveData();
       const max = this.state.arraychar.length;
       const rand = Math.floor(Math.random() * max);
-
       this.setState({ random: rand });
-      await _retrieveData();
     }
   }
 
@@ -624,7 +628,6 @@ class HomeScreen extends React.Component {
     try {
       let o = this.state.arraychar;
       AsyncStorage.setItem('somekey', JSON.stringify(o));
-      console.log(o);
       _retrieveData();
     } catch (error) {
       // Error saving data
@@ -663,8 +666,6 @@ class HomeScreen extends React.Component {
         }}>
           <Button color='tomato' onPress={this._onPressButton.bind(this)}
             title="Randomize"></Button>
-          <Button color='tomato' onPress={this._retrieveData}
-            title="Get"></Button>
         </Row>
       </Grid>
     );
@@ -1223,16 +1224,14 @@ class SettingsPage extends React.Component {
   }
 
   _getData = async () => {
-    if (this.state.random == -1) {
-      _retrieveData();
-    }
+    _retrieveData();
+    this._getData = null;
   }
 
   _retrieveData = async () => {
     try {
       let o = await AsyncStorage.getItem('somekey');
       let c = JSON.parse(o);
-      console.log(c);
       if (c != null) {
         this.setState({arraychar: c});
       }
@@ -1249,37 +1248,62 @@ class SettingsPage extends React.Component {
     try {
       let o = this.state.arraychar;
       AsyncStorage.setItem('somekey', JSON.stringify(o));
-      console.log(o);
+      console.log(o)
     } catch (error) {
       // Error saving data
       Alert.alert(error)
     }
   }
 
-  createImg = () => {
-    let table = [];
-    this.state.arraychar.forEach(element => {
-      table.push(<Grid>{<Image source={element.requireurl}/>}</Grid>);
-    });
-    console.log(table);
-    return table
+  _disableCharacter = (name) => {
+    for (let i = 0; i < 77; i++) {
+      if (this.state.arraychar[i].name == name) {
+        console.log(`${name} ${this.state.arraychar[i].name}`)
+        if (this.state.arraychar[i].enabled == true) {
+          this.state.arraychar[i].enabled = false;
+          console.log(`setting ${name} to false`)
+        }
+        else {
+          this.state.arraychar[i].enabled = true;
+          console.log(`setting ${name} to true`)
+        }
+      }
+    }
+    this._storeData();
+    this.forceUpdate();
   }
 
+  createImg = () => {
+    this._retrieveData();
+    let table = [];
+    let style;
+    this.state.arraychar.forEach(element => {
+      if (element.enabled == true) {
+        style = {height: 100, width: 100, resizeMode: 'contain'};
+      }
+      else {
+        style = {height: 100, width: 100, resizeMode: 'contain', tintColor: 'gray'}
+      }
+      table.push(<TouchableHighlight underlayColor='transparent' onPress={() => this._disableCharacter(element.name)}><Image style={style} source={element.requireurl}/></TouchableHighlight>);
+    });
+    return table
+  }
 
   render() {
 
 
     return (
-      <Grid onTouchStart={this._getData} style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white'
+      <Grid style={{
+        backgroundColor: 'white',
+        alignContent: 'center',
+        marginTop: 35
       }}>
-      <Button color='tomato' onPress={this._storeData}
-            title="Store"></Button>
-        <Grid>
+        <ScrollView>
+          <View style={{flex: 1, flexDirection: 'row', flexWrap: "wrap", alignItems: 'flex-start', justifyContent: 'center'
+      }}>
           {this.createImg()}
-        </Grid>
+          </View>
+        </ScrollView>
       </Grid>
     )
   }
