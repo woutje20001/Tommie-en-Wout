@@ -560,21 +560,25 @@ class HomeScreen extends React.Component {
   };
 
   _onPressButton = async (e) => {
-    let bool = true;
-    while( bool == true) {
-    // Random generator
     await this._retrieveData();
-    const max = this.state.arraychar.length;
+    let newarray = new Array();
+    for (let i = 0; i < this.state.arraychar.length; i++) {
+      if (this.state.arraychar[i].enabled == true) {
+        newarray.push(this.state.arraychar[i])
+      }
+    }
+    console.log(newarray)
+    // Random generator
+    const max = newarray.length;
     const rand = Math.floor(Math.random() * max);
     this.setState({ random: rand });
     let idx = this.state.random;
 
     // Looks through arraychar for the the requiredurl of the randomly chosen number
-    let o = this.state.arraychar;
-    var key = Object.keys(o)[idx];
-    value = o[key];
+    var key = Object.keys(newarray)[idx];
+    value = newarray[key];
     //console.log(value);
-    console.log(value);
+    //console.log(value);
     if (value.enabled == true) {
       this.setState({
           characterName: value.name,
@@ -593,22 +597,26 @@ class HomeScreen extends React.Component {
       // An error occurred!
     }
   }
-  }
 }
 
 
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('somekey');
+      let o = await AsyncStorage.getItem('somekey') ||JSON.stringify(this.state.arraychar);
+      if (o != null) {
       let c = JSON.parse(o);
-      console.log(c);
-      if (c != null) {
+      //console.log(c);
+      if (c[0].name != null || c[0].name != undefined || c[0].name != "") {
         this.setState({arraychar: c});
       }
       else {
         await _storeData();
       }
+    }
+    else {
+      await _storeData();
+    }
     } catch (error) {
       // Error retrieving data
       Alert.alert(error)
@@ -627,8 +635,8 @@ class HomeScreen extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      AsyncStorage.setItem('somekey', JSON.stringify(o));
-      _retrieveData();
+      await AsyncStorage.setItem('somekey', JSON.stringify(o));
+      // this._retrieveData();
     } catch (error) {
       // Error saving data
       Alert.alert(error)
@@ -636,6 +644,15 @@ class HomeScreen extends React.Component {
   }
 
   render() {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this._retrieveData}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
+    }
     return (
       <Grid onTouchStart={this.setRandom}>
 
@@ -1232,7 +1249,7 @@ class SettingsPage extends React.Component {
     try {
       let o = await AsyncStorage.getItem('somekey');
       let c = JSON.parse(o);
-      if (c != null) {
+      if (c[0].name != null) {
         this.setState({arraychar: c});
       }
       else {
@@ -1248,7 +1265,7 @@ class SettingsPage extends React.Component {
     try {
       let o = this.state.arraychar;
       AsyncStorage.setItem('somekey', JSON.stringify(o));
-      console.log(o)
+      //console.log(o)
     } catch (error) {
       // Error saving data
       Alert.alert(error)
