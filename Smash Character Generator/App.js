@@ -1402,7 +1402,8 @@ class AboutScreen extends React.Component {
       <Row style={{margin: 10,
     height: 50,backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',}}><Text>We would love to read your feedback! Mail us using the button below.</Text></Row>
+    justifyContent: 'center',
+}}><Text style={{textAlign: 'center'}}>We would love to read your feedback! Mail us using the button below.</Text></Row>
       <Row style={{margin: 10, height: 50, backgroundColor: 'white',
           alignItems: 'center',
           justifyContent: 'center',}}><Col style={{backgroundColor: 'white',
