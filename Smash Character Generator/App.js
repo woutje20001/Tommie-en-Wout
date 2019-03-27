@@ -1247,14 +1247,20 @@ class SettingsPage extends React.Component {
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('somekey');
+      let o = await AsyncStorage.getItem('somekey') ||JSON.stringify(this.state.arraychar);
+      if (o != null) {
       let c = JSON.parse(o);
-      if (c[0].name != null) {
+      //console.log(c);
+      if (c[0].name != null || c[0].name != undefined || c[0].name != "") {
         this.setState({arraychar: c});
       }
       else {
         await _storeData();
       }
+    }
+    else {
+      await _storeData();
+    }
     } catch (error) {
       // Error retrieving data
       Alert.alert(error)
