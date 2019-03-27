@@ -4,14 +4,12 @@ import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { FontAwesome } from '@expo/vector-icons';
 import { Audio, AppLoading } from 'expo';
-/*TODO: ADD APPLOADING TO BOTH HOME AND SETTINGS TO SET RANDOM TO -1,
-ADD GOOD LAYOUT TO SETTINGS
-ADD FUNCTIONALITY TO SETTINGS*/
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      //#region 
       arraychar: [{
         id: 1,
         name: "Mario",
@@ -552,6 +550,7 @@ class HomeScreen extends React.Component {
         enabled: true
       },
       ],
+      //#endregion
       random: -1,
       characterSource: require("./img/random.png"),
       characterName: "Press the button to randomize a character",
@@ -567,6 +566,10 @@ class HomeScreen extends React.Component {
         newarray.push(this.state.arraychar[i])
       }
     }
+    if (newarray <= 0) { 
+      alert("Please enable at least one character in the settings tab.");
+    }
+    else {
     console.log(newarray)
     // Random generator
     const max = newarray.length;
@@ -596,6 +599,7 @@ class HomeScreen extends React.Component {
     } catch (error) {
       // An error occurred!
     }
+  }
   }
 }
 
@@ -693,6 +697,7 @@ class SettingsPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      // #region arraychar
       arraychar: [{
         id: 1,
         name: "Mario",
@@ -1233,6 +1238,7 @@ class SettingsPage extends React.Component {
         enabled: true
       },
       ],
+      //#endregion
       random: -1,
       characterSource: require("./img/random.png"),
       characterName: "Press the button to randomize a character",
@@ -1301,6 +1307,24 @@ class SettingsPage extends React.Component {
     }
   }
 
+  _disableAll = () => {
+    for (let i = 0; i < this.state.arraychar.length; i++) {
+      this.state.arraychar[i].enabled = false;
+    }
+    //didn't use setstate for performance reasons
+    this.forceUpdate();
+    this._storeData();
+  }
+
+  _enableAll = () => {
+    for (let i = 0; i < this.state.arraychar.length; i++) {
+      this.state.arraychar[i].enabled = true;
+    }
+    //didn't use setstate for performance reasons
+    this.forceUpdate();
+    this._storeData();
+  }
+
   createImg = () => {
     this._retrieveData();
     let table = [];
@@ -1324,8 +1348,25 @@ class SettingsPage extends React.Component {
       <Grid style={{
         backgroundColor: 'white',
         alignContent: 'center',
-        marginTop: 35
       }}>
+      <Row style={{height: 35,
+      backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center',}}/>
+      <Row style={{height: 50,
+      backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center',}}>
+      <Col style={{backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center'}}><Button style={{margin:'5'}} color='tomato' onPress={this._disableAll}
+            title="Disable All"></Button></Col>
+      
+      <Col style={{backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center'}}><Button style={{margin:'5'}} color='tomato' onPress={this._enableAll}
+            title="Enable All"></Button></Col>
+      </Row>
         <ScrollView>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: "wrap", alignItems: 'flex-start', justifyContent: 'center'
       }}>
@@ -1357,7 +1398,22 @@ class AboutScreen extends React.Component {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white'
-      }}><Text>Coming Soon!</Text>
+      }}>
+      <Row style={{margin: 10,
+    height: 50,backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',}}><Text>We would love to read your feedback! Mail us using the button below.</Text></Row>
+      <Row style={{margin: 10, height: 50, backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center',}}><Col style={{backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center'}}><Button style={{margin: 10}} color='tomato' onPress={this.mailUS}
+            title="Mail Us"></Button></Col>
+            <Col style={{backgroundColor: 'white',
+      alignItems: 'center',
+      justifyContent: 'center'}}>
+      <Button style={{margin: 10}} color='tomato' onPress={this.privacyPolicy}
+            title="Privacy Policy"></Button></Col></Row>
       </Grid>
     )
   }
