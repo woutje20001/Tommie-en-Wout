@@ -2,7 +2,7 @@ import React from 'react';
 import { AppRegistry, TouchableHighlight, StyleSheet, Text, ScrollView, View, Image, Button, Alert, Icon, Linking, AsyncStorage } from 'react-native';
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Audio, AppLoading } from 'expo';
 
 class HomeScreen extends React.Component {
@@ -549,17 +549,33 @@ class HomeScreen extends React.Component {
         audio: require("./sound/Piranha_Plant.wav"),
         enabled: true
       },
+      {
+        id: 78,
+        name: "Joker",
+        requireurl: require("./img/Joker.png"),
+        audio: require("./sound/Joker.wav"),
+        enabled: true
+      },
+      {
+        id: 79,
+        name: "Hero",
+        requireurl: require("./img/Hero.png"),
+        audio: require("./sound/Hero.wav"),
+        enabled: true
+      },
       ],
       //#endregion
       random: -1,
       characterSource: require("./img/random.png"),
       characterName: "Press the button to randomize a character",
+      muted: 'false',
       isReady: false,
     }
   };
 
   _onPressButton = async (e) => {
     await this._retrieveData();
+
     let newarray = new Array();
     for (let i = 0; i < this.state.arraychar.length; i++) {
       if (this.state.arraychar[i].enabled == true) {
@@ -570,7 +586,7 @@ class HomeScreen extends React.Component {
       alert("Please enable at least one character in the settings tab.");
     }
     else {
-    console.log(newarray)
+    //console.log(newarray)
     // Random generator
     const max = newarray.length;
     const rand = Math.floor(Math.random() * max);
@@ -587,11 +603,17 @@ class HomeScreen extends React.Component {
           characterName: value.name,
           characterSource: value.requireurl
       });
-    console.log(`${this.state.characterSource} ${value.requireurl}`);
-    console.log(`${this.state.characterSource} ${value.requireurl}`);
+    //console.log(`${this.state.characterSource} ${value.requireurl}`);
+    //console.log(`${this.state.characterSource} ${value.requireurl}`);
     Audio.setIsEnabledAsync(true)
     const soundObject = new Audio.Sound();
     bool = false;
+    let o = await AsyncStorage.getItem('hero') || this.state.muted;
+    this.setState({
+      muted: o
+    })
+    console.log("muted: " + this.state.muted)
+    if (this.state.muted == 'false') {
     try {
       await soundObject.loadAsync(value.audio);
       await soundObject.playAsync();
@@ -601,13 +623,14 @@ class HomeScreen extends React.Component {
     }
   }
   }
+  }
 }
 
 
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('somekey') ||JSON.stringify(this.state.arraychar);
+      let o = await AsyncStorage.getItem('mutedchar') ||JSON.stringify(this.state.arraychar);
       if (o != null) {
       let c = JSON.parse(o);
       //console.log(c);
@@ -639,7 +662,7 @@ class HomeScreen extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      await AsyncStorage.setItem('somekey', JSON.stringify(o));
+      await AsyncStorage.setItem('mutedchar', JSON.stringify(o));
       // this._retrieveData();
     } catch (error) {
       // Error saving data
@@ -1237,23 +1260,61 @@ class SettingsPage extends React.Component {
         audio: require("./sound/Piranha_Plant.wav"),
         enabled: true
       },
+      {
+        id: 78,
+        name: "Joker",
+        requireurl: require("./img/Joker.png"),
+        audio: require("./sound/Joker.wav"),
+        enabled: true
+      },
+      {
+        id: 79,
+        name: "Hero",
+        requireurl: require("./img/Hero.png"),
+        audio: require("./sound/Hero.wav"),
+        enabled: true
+      },
       ],
       //#endregion
       random: -1,
       characterSource: require("./img/random.png"),
       characterName: "Press the button to randomize a character",
+      muted: 'false',
       isReady: false,
     }
   }
 
   _getData = async () => {
     _retrieveData();
+    let o = await AsyncStorage.getItem('hero') || this.state.muted;
+    this.setState({
+      muted: o
+    })
     this._getData = null;
+  }
+
+  _Mute = async() => {
+    if (this.state.muted == "true") {
+      this.setState({muted: 'false'});
+    }
+    else {
+      this.setState({muted: 'true'});
+    }
+    AsyncStorage.setItem('hero', this.state.muted);
+  }
+
+  _muteIcon = () => {
+    if (this.state.muted == 'false') {
+      return (<TouchableHighlight underlayColor='transparent' onPress={this._Mute} ><Ionicons  name="md-volume-off" size={50} style={{ color: 'black'}}/></TouchableHighlight>);
+    }
+    else {
+      return(<TouchableHighlight underlayColor='transparent' onPress={this._Mute} ><Ionicons  name="md-volume-high" size={50} style={{ color: 'black'}}/></TouchableHighlight>);
+    }
   }
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('somekey') ||JSON.stringify(this.state.arraychar);
+      let o = await AsyncStorage.getItem('mutedchar') ||JSON.stringify(this.state.arraychar);
       if (o != null) {
       let c = JSON.parse(o);
       //console.log(c);
@@ -1276,7 +1337,7 @@ class SettingsPage extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      AsyncStorage.setItem('somekey', JSON.stringify(o));
+      AsyncStorage.setItem('mutedchar', JSON.stringify(o));
       //console.log(o)
     } catch (error) {
       // Error saving data
@@ -1325,6 +1386,8 @@ class SettingsPage extends React.Component {
     this._storeData();
   }
 
+  _getMute = async() => {
+  }
   createImg = () => {
     this._retrieveData();
     let table = [];
@@ -1373,6 +1436,16 @@ class SettingsPage extends React.Component {
           {this.createImg()}
           </View>
         </ScrollView>
+        <View style={{width: 60, height: 60, position: "absolute", backgroundColor: 'white', borderWidth:7,borderColor: 'white', borderRadius:50, alignItems: 'center', bottom: 20, right: 5, shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 5,
+},
+shadowOpacity: 0.57,
+shadowRadius: 15.19,
+
+elevation: 23,
+      justifyContent: 'center'}}>{this._muteIcon()}</View>
       </Grid>
     )
   }

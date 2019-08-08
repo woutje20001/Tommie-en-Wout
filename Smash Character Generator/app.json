@@ -3,12 +3,12 @@
     "name": "Random Smash Character Generator",
     "slug": "random-smash-character-generator",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "4.0.0",
+    "version": "7.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.tommie_en_wout.random_smash_character_generator",
-      "versionCode": 9
+      "versionCode": 15
     }
   }
 }
