@@ -3,7 +3,8 @@ import { AppRegistry, TouchableHighlight, StyleSheet, Text, ScrollView, View, Im
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Audio, AppLoading } from 'expo';
+import { AppLoading } from 'expo';
+import { Audio } from 'expo-av';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -608,11 +609,10 @@ class HomeScreen extends React.Component {
     Audio.setIsEnabledAsync(true)
     const soundObject = new Audio.Sound();
     bool = false;
-    let o = await AsyncStorage.getItem('hero') || this.state.muted;
+    let o = await AsyncStorage.getItem('heromute') || this.state.muted;
     this.setState({
       muted: o
     })
-    console.log("muted: " + this.state.muted)
     if (this.state.muted == 'false') {
     try {
       await soundObject.loadAsync(value.audio);
@@ -630,7 +630,7 @@ class HomeScreen extends React.Component {
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('mutedchar') ||JSON.stringify(this.state.arraychar);
+      let o = await AsyncStorage.getItem('herochar') ||JSON.stringify(this.state.arraychar);
       if (o != null) {
       let c = JSON.parse(o);
       //console.log(c);
@@ -662,7 +662,7 @@ class HomeScreen extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      await AsyncStorage.setItem('mutedchar', JSON.stringify(o));
+      await AsyncStorage.setItem('herochar', JSON.stringify(o));
       // this._retrieveData();
     } catch (error) {
       // Error saving data
@@ -1286,7 +1286,7 @@ class SettingsPage extends React.Component {
 
   _getData = async () => {
     _retrieveData();
-    let o = await AsyncStorage.getItem('hero') || this.state.muted;
+    let o = await AsyncStorage.getItem('heromute') || this.state.muted;
     this.setState({
       muted: o
     })
@@ -1300,7 +1300,7 @@ class SettingsPage extends React.Component {
     else {
       this.setState({muted: 'true'});
     }
-    AsyncStorage.setItem('hero', this.state.muted);
+    AsyncStorage.setItem('heromute', this.state.muted);
   }
 
   _muteIcon = () => {
@@ -1314,7 +1314,7 @@ class SettingsPage extends React.Component {
 
   _retrieveData = async () => {
     try {
-      let o = await AsyncStorage.getItem('mutedchar') ||JSON.stringify(this.state.arraychar);
+      let o = await AsyncStorage.getItem('herochar') ||JSON.stringify(this.state.arraychar);
       if (o != null) {
       let c = JSON.parse(o);
       //console.log(c);
@@ -1337,7 +1337,7 @@ class SettingsPage extends React.Component {
   _storeData = async () => {
     try {
       let o = this.state.arraychar;
-      AsyncStorage.setItem('mutedchar', JSON.stringify(o));
+      AsyncStorage.setItem('herochar', JSON.stringify(o));
       //console.log(o)
     } catch (error) {
       // Error saving data
